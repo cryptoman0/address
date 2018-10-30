@@ -1,17 +1,11 @@
 {
     "name": "cryptoman/address",
+    "license": "MIT",
     "description": "PHP connector for address API service",
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^6.3"
     },
-    "authors": [
-        {
-            "name": "Cryptoman",
-            "email": "cryptoman@address.so"
-        }
-    ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Cryptoman\\Address\\": "src/"
