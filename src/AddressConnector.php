@@ -37,7 +37,7 @@ class AddressConnector
      * @param string $api_token
      * @param string|null $secret_token
      */
-    public function __construct(string $coin, string $api_token, string $secret_token = null)
+    public function __construct(string $coin, $api_token, $secret_token = null)
     {
         $this->coin = $coin;
         $this->api_token = $api_token;
@@ -155,11 +155,11 @@ class AddressConnector
 
     /**
      * Create new account by coin.
-     * @param string $wallet_id
+     * @param int $wallet_id
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function createAccount(string $wallet_id) : array
+    public function createAccount(int $wallet_id) : array
     {
         return $this->request('POST', $this->makeUrl('account', 'create', $wallet_id));
     }
