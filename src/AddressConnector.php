@@ -177,6 +177,23 @@ class AddressConnector
     }
 
     /**
+     * Get all account transactions.
+     * @param int $wallet_id
+     * @param int $account_id
+     * @param int $limit
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getAccountTransactions(int $wallet_id, int $account_id, int $limit = 100) : array
+    {
+        $params = [
+            'limit' => $limit
+        ];
+
+        return $this->request('GET', $this->makeUrl('account', 'transactions', $wallet_id, $account_id), $params);
+    }
+
+    /**
      * Send from account.
      * @param int $wallet_id
      * @param int $account_id
@@ -246,6 +263,7 @@ class AddressConnector
         $wallet = sprintf('%s/', $wallet_id);
         $accounts = 'accounts/';
         $account = sprintf('%s/', $account_id);
+        $transactions = 'transactions/';
         $send = 'send/';
         $permissions = 'permissions/';
 
@@ -264,7 +282,8 @@ class AddressConnector
                 'create' => $coin . $wallets . $wallet . $accounts,
                 'read' => $coin . $wallets . $wallet . $accounts . $account,
                 'delete' => $coin . $wallets . $wallet . $accounts . $account,
-                'send' => $coin . $wallets . $wallet . $accounts . $account . $send
+                'send' => $coin . $wallets . $wallet . $accounts . $account . $send,
+                'transactions' => $coin . $wallets . $wallet . $accounts . $account . $transactions,
             ],
         ];
 
