@@ -49,6 +49,26 @@ class AddressConnector
     }
 
     /**
+     * Get all coins.
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCoins(): array
+    {
+        return $this->request('GET', $this->makeUrl('coins', 'all'));
+    }
+
+    /**
+     * Get coin info by symbol.
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCoin(): array
+    {
+        return $this->request('GET', $this->makeUrl('coins', 'read'));
+    }
+
+    /**
      * Get all wallets by coin.
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -110,6 +130,22 @@ class AddressConnector
     public function deleteWallet(int $wallet_id) : array
     {
         return $this->request('DELETE', $this->makeUrl('wallet', 'delete', $wallet_id));
+    }
+
+    /**
+     * Get all account transactions.
+     * @param int $wallet_id
+     * @param int $limit
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getWalletTransactions(int $wallet_id, int $limit = 100) : array
+    {
+        $params = [
+            'limit' => $limit
+        ];
+
+        return $this->request('GET', $this->makeUrl('wallet', 'transactions', $wallet_id), $params);
     }
 
     /**
@@ -258,6 +294,7 @@ class AddressConnector
      */
     private function makeUrl(string $type, string $method, int $wallet_id = null, int $account_id = null) : string
     {
+        $coins = 'coins';
         $coin = sprintf('coins/%s/', $this->coin);
         $wallets = 'wallets/';
         $wallet = sprintf('%s/', $wallet_id);
@@ -268,6 +305,10 @@ class AddressConnector
         $permissions = 'permissions/';
 
         $urls = [
+            'coins' => [
+                'all' => $coins,
+                'read' => $coin
+            ],
             'wallet' => [
                 'all' => $coin . $wallets,
                 'create' => $coin . $wallets,
@@ -275,7 +316,8 @@ class AddressConnector
                 'update' => $coin . $wallets . $wallet,
                 'delete' => $coin . $wallets . $wallet,
                 'send' => $coin . $wallets . $wallet . $send,
-                'permissions' => $coin . $wallets . $wallet . $permissions
+                'permissions' => $coin . $wallets . $wallet . $permissions,
+                'transactions' => $coin . $wallets . $wallet . $transactions,
             ],
             'account' => [
                 'all' => $coin . $wallets . $wallet . $accounts,
