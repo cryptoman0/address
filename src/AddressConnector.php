@@ -43,9 +43,8 @@ class AddressConnector
         $this->api_token = $api_token;
         $this->secret_token = $secret_token;
 
-        //TODO change
         $this->client = new Client([
-            'base_uri' => 'http://gateway.hrom.fund/api/'
+            'base_uri' => 'https://api.address.so/api/'
         ]);
     }
 
