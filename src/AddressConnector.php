@@ -4,7 +4,6 @@ namespace Cryptoman\Address;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Mockery\Exception;
 
 class AddressConnector
 {
@@ -352,9 +351,12 @@ class AddressConnector
             }
 
             $request = $this->client->request($method, $url, $query);
-            $response = $request->getBody()->getContents();
-        } catch (RequestException $e) {
-            throw new Exception($e->getMessage());
+
+            if ($request) {
+                $response = $request->getBody()->getContents();
+            }
+        } catch (RequestException $exception) {
+            throw new RequestException($exception->getMessage(), $exception->getRequest());
         }
 
         $data = json_decode($response, true);
