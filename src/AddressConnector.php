@@ -150,12 +150,12 @@ class AddressConnector
     /**
      * Send from wallet by coin.
      * @param int $wallet_id
-     * @param int $amount
+     * @param float $amount
      * @param string $recepient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromWallet(int $wallet_id, int $amount, string $recepient) : array
+    public function sendFromWallet(int $wallet_id, float $amount, string $recepient) : array
     {
         $params = [
             'amount' => $amount,
@@ -232,12 +232,12 @@ class AddressConnector
      * Send from account.
      * @param int $wallet_id
      * @param int $account_id
-     * @param int $amount
+     * @param float $amount
      * @param string $recepient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromAccount(int $wallet_id, int $account_id, int $amount, string $recepient) : array
+    public function sendFromAccount(int $wallet_id, int $account_id, float $amount, string $recepient) : array
     {
         $params = [
             'amount' => $amount,
