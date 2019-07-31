@@ -152,15 +152,22 @@ class AddressConnector
      * @param int $wallet_id
      * @param float $amount
      * @param string $recepient
+     * @param string|null $odd_address
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromWallet(int $wallet_id, float $amount, string $recepient) : array
+    public function sendFromWallet(int $wallet_id, float $amount, string $recepient, string $odd_address = null) : array
     {
         $params = [
             'amount' => $amount,
-            'recepient' => $recepient
+            'recepient' => $recepient,
         ];
+
+        if ($odd_address) {
+            $params = array_merge($params, [
+                'odd_address' => $odd_address
+            ]);
+        }
 
         return $this->request('POST', $this->makeUrl('wallet', 'send', $wallet_id), $params, true);
     }
@@ -212,6 +219,22 @@ class AddressConnector
     }
 
     /**
+     * Archive accounts
+     * @param int $wallet_id
+     * @param array $accounts
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function archiveAccounts(int $wallet_id, array $accounts): array
+    {
+        $params = [
+            'accounts' => $accounts
+        ];
+
+        return  $this->request('DELETE', $this->makeUrl('account', 'archive', $wallet_id), $params);
+    }
+
+    /**
      * Get all account transactions.
      * @param int $wallet_id
      * @param int $account_id
@@ -234,15 +257,22 @@ class AddressConnector
      * @param int $account_id
      * @param float $amount
      * @param string $recepient
+     * @param string|null $odd_address
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromAccount(int $wallet_id, int $account_id, float $amount, string $recepient) : array
+    public function sendFromAccount(int $wallet_id, int $account_id, float $amount, string $recepient, string $odd_address = null) : array
     {
         $params = [
             'amount' => $amount,
             'recepient' => $recepient
         ];
+
+        if ($odd_address) {
+            $params = array_merge($params, [
+                'odd_address' => $odd_address
+            ]);
+        }
 
         return $this->request('POST', $this->makeUrl('account', 'send', $wallet_id, $account_id), $params, true);
     }
@@ -302,6 +332,7 @@ class AddressConnector
         $transactions = 'transactions/';
         $send = 'send/';
         $permissions = 'permissions/';
+        $archive = 'archive/';
 
         $urls = [
             'coins' => [
@@ -323,6 +354,7 @@ class AddressConnector
                 'create' => $coin . $wallets . $wallet . $accounts,
                 'read' => $coin . $wallets . $wallet . $accounts . $account,
                 'delete' => $coin . $wallets . $wallet . $accounts . $account,
+                'archive' => $coin . $wallets . $wallet . $accounts . $archive,
                 'send' => $coin . $wallets . $wallet . $accounts . $account . $send,
                 'transactions' => $coin . $wallets . $wallet . $accounts . $account . $transactions,
             ],
