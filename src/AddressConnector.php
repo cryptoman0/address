@@ -151,16 +151,18 @@ class AddressConnector
      * Send from wallet by coin.
      * @param int $wallet_id
      * @param float $amount
-     * @param string $recepient
+     * @param string $recipient
+     * @param string $payment_password
      * @param string|null $odd_address
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromWallet(int $wallet_id, float $amount, string $recepient, string $odd_address = null) : array
+    public function sendFromWallet(int $wallet_id, float $amount, string $recipient, string $payment_password, string $odd_address = null) : array
     {
         $params = [
             'amount' => $amount,
-            'recepient' => $recepient,
+            'recipient' => $recipient,
+            'payment_password' => $payment_password
         ];
 
         if ($odd_address) {
@@ -256,16 +258,18 @@ class AddressConnector
      * @param int $wallet_id
      * @param int $account_id
      * @param float $amount
-     * @param string $recepient
+     * @param string $recipient
+     * @param string $payment_password
      * @param string|null $odd_address
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendFromAccount(int $wallet_id, int $account_id, float $amount, string $recepient, string $odd_address = null) : array
+    public function sendFromAccount(int $wallet_id, int $account_id, float $amount, string $recipient, string $payment_password, string $odd_address = null) : array
     {
         $params = [
             'amount' => $amount,
-            'recepient' => $recepient
+            'recipient' => $recipient,
+            'payment_password' => $payment_password
         ];
 
         if ($odd_address) {
