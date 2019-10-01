@@ -388,16 +388,10 @@ class AddressConnector
 
             $request = $this->client->request($method, $url, $query);
 
-            if ($request) {
-                $response = $request->getBody()->getContents();
-            }
+            return json_decode($request->getBody()->getContents(), true);
         } catch (RequestException $exception) {
             throw new RequestException($exception->getMessage(), $exception->getRequest());
         }
-
-        $data = json_decode($response, true);
-
-        return $data;
     }
 
     /**
@@ -407,7 +401,9 @@ class AddressConnector
      */
     private function signParams(array $params) : string
     {
-        return hash_hmac('sha256', http_build_query($params), $this->secret_token);
+        $secret = hash('sha512', $this->secret_token);
+
+        return hash_hmac('sha512', http_build_query($params), $secret);
     }
 
 }
